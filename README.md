@@ -11,8 +11,8 @@ Tout est pensé pour tourner avec **Docker** (sans Docker Compose).
 
 ## Aperçu
 
-![Aperçu — page liste](docs/preview-1.png)
-![Aperçu — page détail](docs/preview-2.png)
+![Aperçu — page liste](music1.png)
+![Aperçu — page détail](music2.png)
 
 ## Fonctionnalités
 
