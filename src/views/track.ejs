@@ -1,0 +1,54 @@
+<%- include("partials/header", { title }) %>
+
+<div class="details">
+  <a class="back" href="/">← Retour</a>
+
+  <div class="details__card">
+    <div class="details__media">
+      <% const img = (track.artworkUrl100 || "").replace("100x100", "1000x1000"); %>
+      <% if (img) { %>
+        <img src="<%= img %>" alt="<%= track.name %>" />
+      <% } else { %>
+        <div class="details__fallback">No cover</div>
+      <% } %>
+    </div>
+
+    <div class="details__body">
+      <h1 class="details__title"><%= track.name %></h1>
+      <div class="details__artist"><%= track.artistName %></div>
+
+      <dl class="kv">
+        <% if (track.releaseDate) { %>
+          <div class="kv__row">
+            <dt>Date</dt>
+            <dd><%= new Date(track.releaseDate).toLocaleDateString("fr-FR") %></dd>
+          </div>
+        <% } %>
+        <div class="kv__row">
+          <dt>Source</dt>
+          <dd><%= track.source %></dd>
+        </div>
+        <% if (track.genres && track.genres.length) { %>
+          <div class="kv__row">
+            <dt>Genres</dt>
+            <dd><%= track.genres.join(", ") %></dd>
+          </div>
+        <% } %>
+        <div class="kv__row">
+          <dt>Synchronisé</dt>
+          <dd><%= new Date(track.updatedAt).toLocaleString("fr-FR") %></dd>
+        </div>
+      </dl>
+
+      <div class="details__actions">
+        <% if (track.url) { %>
+          <a class="btn btn--primary" href="<%= track.url %>" target="_blank" rel="noreferrer">Ouvrir sur Apple Music</a>
+        <% } %>
+        <a class="btn btn--ghost" href="/api/tracks/<%= track._id %>">JSON</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<%- include("partials/footer") %>
+

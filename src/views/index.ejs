@@ -1,0 +1,82 @@
+<%- include("partials/header", { title }) %>
+
+<section class="hero">
+  <div class="hero__text">
+    <h1>Top albums les plus écoutés</h1>
+    <p class="muted">
+      Les données sont synchronisées depuis une API publique puis stockées dans MongoDB.
+    </p>
+    <form class="search" method="GET" action="/">
+      <input
+        class="search__input"
+        type="search"
+        name="q"
+        value="<%= q %>"
+        placeholder="Rechercher (titre, artiste)…"
+        autocomplete="off"
+      />
+      <button class="btn" type="submit">Rechercher</button>
+      <% if (q) { %>
+        <a class="btn btn--ghost" href="/">Effacer</a>
+      <% } %>
+    </form>
+    <div class="hero__meta">
+      <div class="pill"><strong><%= total %></strong> éléments</div>
+      <div class="pill">
+        Page <strong><%= page %></strong> / <strong><%= totalPages %></strong>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="grid">
+  <% tracks.forEach((t, idx) => { %>
+    <article class="card">
+      <div class="card__rank"><%= (page - 1) * pageSize + idx + 1 %></div>
+      <div class="card__media">
+        <% const img = (t.artworkUrl100 || "").replace("100x100", "600x600"); %>
+        <% if (img) { %>
+          <img src="<%= img %>" alt="<%= t.name %>" loading="lazy" />
+        <% } else { %>
+          <div class="card__fallback">No cover</div>
+        <% } %>
+      </div>
+      <div class="card__body">
+        <div class="card__title" title="<%= t.name %>"><%= t.name %></div>
+        <div class="card__artist"><%= t.artistName %></div>
+        <div class="card__meta">
+          <% if (t.releaseDate) { %>
+            <span>📅 <%= new Date(t.releaseDate).toLocaleDateString("fr-FR") %></span>
+          <% } %>
+          <% if (t.genres && t.genres.length) { %>
+            <span class="dot">•</span>
+            <span title="<%= t.genres.join(', ') %>"><%= t.genres[0] %></span>
+          <% } %>
+        </div>
+        <div class="card__actions">
+          <% if (t.url) { %>
+            <a class="btn btn--primary" href="<%= t.url %>" target="_blank" rel="noreferrer">Écouter</a>
+          <% } %>
+          <a class="btn btn--ghost" href="/tracks/<%= t._id %>">Détails</a>
+        </div>
+      </div>
+    </article>
+  <% }); %>
+</section>
+
+<nav class="pager">
+  <% if (page > 1) { %>
+    <a class="pager__link" href="/?<%= new URLSearchParams({ q, page: String(page - 1) }).toString() %>">← Précédent</a>
+  <% } else { %>
+    <span class="pager__link pager__link--disabled">← Précédent</span>
+  <% } %>
+
+  <% if (page < totalPages) { %>
+    <a class="pager__link" href="/?<%= new URLSearchParams({ q, page: String(page + 1) }).toString() %>">Suivant →</a>
+  <% } else { %>
+    <span class="pager__link pager__link--disabled">Suivant →</span>
+  <% } %>
+</nav>
+
+<%- include("partials/footer") %>
+
