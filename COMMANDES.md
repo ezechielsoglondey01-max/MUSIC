@@ -60,7 +60,7 @@ Ouvrir :
 Invoke-RestMethod -Method Post -Uri http://localhost:8080/admin/sync
 ```
 
-### Avec token (recommandé en prod)
+### Avec token
 
 1) Démarre l’app avec `-e ADMIN_TOKEN=mon-secret`
 2) Puis :
@@ -85,7 +85,7 @@ docker rm music-app
 docker rm music-mongo
 ```
 
-Supprimer volume (⚠️ supprime les données) :
+Supprimer volume :
 
 ```powershell
 docker volume rm music-mongo-data
